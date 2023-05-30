@@ -1,14 +1,13 @@
 import { motion } from 'framer-motion'
-import getTypeBgColor from '../../../utils/getTypeBgColor'
+
+import getTypeBgColor from '../../utils/getTypeBgColor'
+import getFormattedId from '../../utils/getFormattedId'
+import capitalizeName from '../../utils/capitalizeName'
 
 const PokemonCard = ({ pokemon }) => {
-	const capitalize = (name) => {
-		return name.charAt(0).toUpperCase() + name.slice(1)
-	}
-
-	const formattedId = String(pokemon?.id).padStart(3, '0')
+	
+	const formattedId = getFormattedId(pokemon?.id)
 	const imagePokemon = `poke_images/${formattedId}.png`
-
 	const bgPokemon = getTypeBgColor(pokemon?.types[0]?.type?.name)
 
 	return (
@@ -19,7 +18,7 @@ const PokemonCard = ({ pokemon }) => {
 		>
 			<div className="flex justify-between px-2 py-1">
 				<p className="font-bold text-[0.6rem] sm:text-base mb-1">
-					{pokemon ? capitalize(pokemon.name) : 'Unidentified'}
+					{pokemon ? capitalizeName(pokemon.name) : 'Unidentified'}
 				</p>
 				<p className="font-bold text-[0.6rem] sm:text-base mb-1">
 					#{formattedId || '???'}
@@ -33,7 +32,7 @@ const PokemonCard = ({ pokemon }) => {
 							className="bg-white bg-opacity-25 rounded-full px-2 py-0.5"
 						>
 							<p className="text-[0.4rem] sm:text-[0.7rem] lg:text-sm font-semibold whitespace-normal">
-								{capitalize(name)}
+								{capitalizeName(name)}
 							</p>
 						</div>
 					))}

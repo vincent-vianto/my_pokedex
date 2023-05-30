@@ -1,54 +1,50 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { motion } from 'framer-motion'
-import PokemonCard from '../PokemonCard'
-import PokemonModal from '../PokemonModal'
+import PokemonCard from './PokemonCard'
+import PokemonModal from './PokemonModal'
 
 const PokemonGrids = ({
 	pokemonList,
 	handleNextPage,
 	handlePreviousPage,
 	currentPage,
-	loading,
 }) => {
-	const [selectedId, setSelectedId] = useState(null)
+	const [selectedPokemon, setSelectedPokemon] = useState(null)
 
 	const closeModal = () => {
-		setSelectedId(null)
+		setSelectedPokemon(null)
 	}
 
 	return (
-		<>
+		<Fragment>
 			<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 				{pokemonList.map((pokemon, index) => (
 					<motion.div
 						key={pokemon.name}
-						initial={{ x: -100, opacity: 0, scale: 0.5 }}
+						initial={{ opacity: 0 }}
 						animate={{
-							x: 0,
 							opacity: 1,
-							scale: 1,
 							transition: {
-								duration: 0.7,
-								delay: index * 0.1,
+								duration: 0.4,
+								delay: index * 0.2,
 								ease: 'easeOut',
 							},
 						}}
-						exit={{ x: -100, opacity: 0, scale: 0.5 }}
+						exit={{ opacity: 0 }}
 						transition={{ duration: 0.5 }}
 						layoutId={pokemon.id}
-						onClick={() => setSelectedId(pokemon.id)}
+						onClick={() => setSelectedPokemon(pokemon)}
 					>
 						<PokemonCard pokemon={pokemon} />
 					</motion.div>
 				))}
 			</div>
-			{selectedId && (
-				<PokemonModal selected={selectedId} onClose={closeModal} />
+			{selectedPokemon && (
+				<PokemonModal selected={selectedPokemon} onClose={closeModal} />
 			)}
 			<div className="flex justify-center mt-4">
 				<motion.button
 					onClick={handlePreviousPage}
-					disabled={loading}
 					className={`
 						${currentPage === 1 ? `hidden` : 'block'} 
 						px-4 py-2 mx-1 bg-gray-300 text-gray-600 rounded-md 
@@ -73,12 +69,11 @@ const PokemonGrids = ({
 					whileTap={{
 						scale: 0.9,
 					}}
-					disabled={loading}
 				>
 					Next
 				</motion.button>
 			</div>
-		</>
+		</Fragment>
 	)
 }
 
